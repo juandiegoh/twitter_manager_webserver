@@ -2,6 +2,7 @@ package twitter_manager_webserver.repositories
 
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
+import twitter_manager_webserver.dto.CampaignDTO
 import twitter_manager_webserver.factories.CampaignDTOFactory
 import twitter_manager_webserver.utils.RetryUtil
 
@@ -26,5 +27,27 @@ class RestCampaignRepository implements CampaignRepository {
             throw e
         }
         return campaignDTOFactory.createListOfCampaignDTOFromJSONList(response)
+    }
+
+    @Override
+    def save(CampaignDTO campaignDTO) {
+        def campaignJSON = this.campaignDTOFactory.createJSONFromCampaign(campaignDTO)
+
+        def response = null
+        try {
+            HTTPBuilder httpBuilder = new HTTPBuilder(API_URL)
+            response = RetryUtil.retry(3, 100) {
+                return httpBuilder.post(
+                        path: 'campaigns',
+                        requestContentType: ContentType.JSON,
+                        contentType: ContentType.JSON,
+                        body: campaignJSON
+                )
+            }
+        } catch (e) {
+            log.error "Hubo un error al leer de la api de tweets", ${e}
+            throw e
+        }
+        return response.id
     }
 }

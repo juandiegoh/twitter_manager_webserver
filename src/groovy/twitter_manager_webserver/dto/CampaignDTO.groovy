@@ -6,4 +6,8 @@ class CampaignDTO {
     String keywords
     Boolean turnedOn
     String andRule
+
+    boolean hasErrors() {
+        name == null || keywords == null || turnedOn == null || andRule == null
+    }
 }

@@ -28,4 +28,13 @@ class CampaignDTOFactory {
         }
         return andRule?.and_words
     }
+
+    def createJSONFromCampaign(CampaignDTO campaignDTO) {
+        return [
+                and_keywords : campaignDTO.andRule,
+                keywords : campaignDTO.keywords,
+                name : campaignDTO.name,
+                turned_on : campaignDTO.turnedOn
+        ]
+    }
 }

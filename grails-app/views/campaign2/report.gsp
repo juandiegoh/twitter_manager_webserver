@@ -61,6 +61,12 @@
 <body>
 <g:javascript src="highcharts.js" />
 <g:javascript src="exporting.js" />
+<div class="nav" role="navigation">
+    <ul>
+        <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+        <li><a class="list" href="${createLink(uri: '/campaign2')}"><g:message code="default.list.label" args="Campaign" /></a></li>
+    </ul>
+</div>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
