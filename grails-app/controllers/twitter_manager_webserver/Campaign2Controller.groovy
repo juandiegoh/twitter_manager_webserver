@@ -66,7 +66,7 @@ class Campaign2Controller {
         }
 
         if (campaignInstance.hasErrors()) {
-            respond [:], view:'create'
+            respond campaignInstance.errors, view:'create'
             return
         }
 
@@ -80,6 +80,23 @@ class Campaign2Controller {
             '*' { respond campaignInstance, [status: CREATED] }
         }
     }
+
+    def turnon() {
+        def result = this.campaignService.turnOn(params.id)
+        def message = result ? "Campaign ${params.id} was turned on!" : "Campaign ${params.id} could not be turned on beacause of an error!"
+
+        flash.message = message
+        redirect action: "index", method: "GET"
+    }
+
+    def turnoff() {
+        def result = this.campaignService.turnOff(params.id)
+        def message = result ? "Campaign ${params.id} was turned off!" : "Campaign ${params.id} could not be turned off beacause of an error!"
+
+        flash.message = message
+        redirect action: "index", method: "GET"
+    }
+
 
     protected void notFound() {
         request.withFormat {

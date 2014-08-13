@@ -1,5 +1,8 @@
 package twitter_manager_webserver.dto
 
+import grails.validation.Validateable
+
+@Validateable
 class CampaignDTO {
     Long id
     String name
@@ -7,7 +10,10 @@ class CampaignDTO {
     Boolean turnedOn
     String andRule
 
-    boolean hasErrors() {
-        name == null || keywords == null || turnedOn == null || andRule == null
+    static constraints = {
+        name blank: false
+        keywords blank: false
+        turnedOn blank: false
+        turnedOn blank: false
     }
 }

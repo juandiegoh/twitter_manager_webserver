@@ -26,4 +26,12 @@ class CampaignService {
         campaignDTO.id = id
         return campaignDTO
     }
+
+    def turnOn(campaignId) {
+        return this.campaignRepository.turnOn(campaignId)
+    }
+
+    def turnOff(campaignId) {
+        return this.campaignRepository.turnOff(campaignId)
+    }
 }

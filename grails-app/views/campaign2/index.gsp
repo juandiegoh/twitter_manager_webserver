@@ -46,7 +46,7 @@
 					
 						<td>${fieldValue(bean: campaignInstance, field: "andRule")}</td>
 					
-						<td><g:formatBoolean boolean="${campaignInstance.turnedOn}" /></td>
+						<td><g:link action="${campaignInstance.turnedOn ? 'turnoff' : 'turnon'}" id="${campaignInstance.id}"><g:formatBoolean boolean="${campaignInstance.turnedOn}" /></g:link></td>
 
                         <td><g:link action="report" id="${campaignInstance.id}">view</g:link></td>
 
