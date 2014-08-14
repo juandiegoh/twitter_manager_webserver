@@ -1,7 +1,9 @@
 package twitter_manager_webserver
 
 import twitter_manager_webserver.dto.CampaignDTO
+import twitter_manager_webserver.reports.FollowersByCategoryGenerator
 import twitter_manager_webserver.reports.IndexByHourReportGenerator
+import twitter_manager_webserver.reports.SentimentByCountryGenerator
 import twitter_manager_webserver.repositories.CampaignRepository
 import twitter_manager_webserver.repositories.TweetCampaignRepository
 
@@ -10,6 +12,8 @@ class CampaignService {
     CampaignRepository campaignRepository
     TweetCampaignRepository tweetCampaignRepository
     IndexByHourReportGenerator indexByHourReportGenerator
+    SentimentByCountryGenerator sentimentByCountry
+    FollowersByCategoryGenerator followersByCategoryGenerator
 
     def findAll() {
         return this.campaignRepository.findAll()
@@ -17,8 +21,12 @@ class CampaignService {
 
     def getReportsDataFromTweetsOfCampaign(campaignId, dateFrom, dateTo) {
         def tweetsByCampaign = this.tweetCampaignRepository.findAllByCampaignIdBetween(campaignId, dateFrom, dateTo)
+
         def indexByHourData = indexByHourReportGenerator.groupByTweets(tweetsByCampaign)
-        return indexByHourData
+        def sentimentByCountry = sentimentByCountry.generateGroupedData(tweetsByCampaign)
+        def followersByCategory = followersByCategoryGenerator.generateGroupedData(tweetsByCampaign)
+
+        return [ index: indexByHourData, country: sentimentByCountry, followers: followersByCategory ]
     }
 
     def save(CampaignDTO campaignDTO) {

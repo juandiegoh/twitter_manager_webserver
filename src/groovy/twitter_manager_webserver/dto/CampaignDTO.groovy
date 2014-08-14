@@ -11,6 +11,7 @@ class CampaignDTO {
     String andRule
 
     static constraints = {
+        id blank: true, nullable: true
         name blank: false
         keywords blank: false
         turnedOn blank: false

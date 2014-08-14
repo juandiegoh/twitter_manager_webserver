@@ -1,7 +1,9 @@
 import twitter_manager_webserver.CampaignService
 import twitter_manager_webserver.factories.CampaignDTOFactory
 import twitter_manager_webserver.factories.TweetCampaignDTOFactory
+import twitter_manager_webserver.reports.FollowersByCategoryGenerator
 import twitter_manager_webserver.reports.IndexByHourReportGenerator
+import twitter_manager_webserver.reports.SentimentByCountryGenerator
 import twitter_manager_webserver.repositories.RestCampaignRepository
 import twitter_manager_webserver.repositories.RestTweetCampaignRepository
 import twitter_manager_webserver.repositories.TweetCampaignRepository
@@ -13,6 +15,8 @@ beans = {
         campaignRepository = ref('restCampaignRepository')
         tweetCampaignRepository = ref('restTweetCampaignRepository')
         indexByHourReportGenerator = ref('indexByHourReportGenerator')
+        sentimentByCountry = ref('sentimentByCountryGenerator')
+        followersByCategoryGenerator = ref('followersByCategoryGenerator')
     }
 
     restCampaignRepository(RestCampaignRepository) {
@@ -27,4 +31,6 @@ beans = {
     tweetCampaignDTOFactory(TweetCampaignDTOFactory)
 
     indexByHourReportGenerator(IndexByHourReportGenerator)
+    sentimentByCountryGenerator(SentimentByCountryGenerator)
+    followersByCategoryGenerator(FollowersByCategoryGenerator)
 }

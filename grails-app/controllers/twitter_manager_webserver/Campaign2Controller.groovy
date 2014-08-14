@@ -21,15 +21,31 @@ class Campaign2Controller {
         def dateTo = getDateTo()
 
         def result = this.campaignService.getReportsDataFromTweetsOfCampaign(params.id, dateFrom, dateTo)
-        def hoursString = getHoursString(result.hours)
+
+        def hours = result.index
+        def countries = result.country
+        def followers = result.followers
+
+        def hoursString = getHoursString(hours.hours)
 
         def dateFromResult = DateParseUtil.getStringFromDate(dateFrom)
         def dateToResult = DateParseUtil.getStringFromDate(dateTo)
 
+        def countriesString = getCountriesString(countries.countries)
+        def categoriesString = getFollowersString(followers.categories)
+
         [campaignName: "${params.id}", dateFrom: "${dateFromResult}", dateTo: "${dateToResult}",
                 hours: hoursString, positiveLabel: "POSITIVE",
-                positiveValues: result.positives, negativeLabel: "NEGATIVE",
-                negativeValues: result.negatives]
+                positiveValues: hours.positives, negativeLabel: "NEGATIVE",
+                negativeValues: hours.negatives,
+                countriesPositive:countries.positives,
+                countriesNegative:countries.negatives,
+                countriesNeutral:countries.neutrals,
+                countries: countriesString,
+                followersCategories: categoriesString,
+                followersPositives: followers.positives,
+                followersNegatives: followers.negatives
+        ]
     }
 
     def getDateTo() {
@@ -48,6 +64,16 @@ class Campaign2Controller {
                 return new Date() - 6.hours
             }
         }
+    }
+
+    def getFollowersString(followers) {
+        def joins = followers.collect { "\"${it}\"" }.join(",")
+        return "[ ${joins} ]"
+    }
+
+    def getCountriesString(countries) {
+        def joins = countries.collect { "\"${it}\"" }.join(",")
+        return "[ ${joins} ]"
     }
 
     def getHoursString(hours) {
